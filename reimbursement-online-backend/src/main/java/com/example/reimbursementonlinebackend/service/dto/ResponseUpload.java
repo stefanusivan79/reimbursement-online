@@ -4,19 +4,17 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
-
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class SubmitReimbursementDTO {
+public class ResponseUpload {
 
-    private Instant datePurchase;
+    private String url;
 
-    private String description;
+    private String status;
 
-    private BigDecimal amount;
+    private String bucket;
 
-    private List<RequestUploadDTO> attachment;
+    private String nameOriginal;
+
+    private String fileName;
 }

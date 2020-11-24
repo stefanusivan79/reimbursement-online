@@ -2,9 +2,10 @@ package com.example.reimbursementonlinebackend.service;
 
 import com.example.reimbursementonlinebackend.domain.Employee;
 import com.example.reimbursementonlinebackend.domain.Reimbursement;
+import com.example.reimbursementonlinebackend.domain.ReimbursementAttachment;
 import com.example.reimbursementonlinebackend.enums.StatusReimbursement;
-import com.example.reimbursementonlinebackend.exception.BadRequestException;
 import com.example.reimbursementonlinebackend.exception.ReimbursementNotFoundException;
+import com.example.reimbursementonlinebackend.repository.ReimbursementAttachmentRepository;
 import com.example.reimbursementonlinebackend.repository.ReimbursementRepository;
 import com.example.reimbursementonlinebackend.service.dto.ReimbursementDTO;
 import com.example.reimbursementonlinebackend.service.dto.SubmitReimbursementDTO;
@@ -23,10 +24,21 @@ public class ReimbursementService {
 
     private ReimbursementRepository reimbursementRepository;
     private ReimbursementMapper reimbursementMapper;
+    private ReimbursementAttachmentRepository reimbursementAttachmentRepository;
 
-    public ReimbursementService(ReimbursementRepository reimbursementRepository, ReimbursementMapper reimbursementMapper) {
+    public ReimbursementService(ReimbursementRepository reimbursementRepository, ReimbursementMapper reimbursementMapper,
+                                ReimbursementAttachmentRepository reimbursementAttachmentRepository) {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
+        this.reimbursementAttachmentRepository = reimbursementAttachmentRepository;
+    }
+
+    private List<ReimbursementDTO> getReimbursement(Page<Reimbursement> reimbursements) {
+
+        return reimbursements.getContent().stream().map(reimbursement -> {
+            List<ReimbursementAttachment> attachments = reimbursementAttachmentRepository.findByReimbursement(reimbursement);
+            return reimbursementMapper.reimbursementToReimbursementDto(reimbursement, attachments);
+        }).collect(Collectors.toList());
     }
 
     public Map<String, Object> findAll(Integer page, Integer limit, String dir, String sortColumn) {
@@ -34,7 +46,7 @@ public class ReimbursementService {
 
         Page<Reimbursement> reimbursements = reimbursementRepository.findAll(pageable);
 
-        List<ReimbursementDTO> data = reimbursements.getContent().stream().map(reimbursementMapper::reimbursementToReimbursementDto).collect(Collectors.toList());
+        List<ReimbursementDTO> data = getReimbursement(reimbursements);
 
         return PaginationUtil.constructMapReturn(data, reimbursements.getTotalElements(), reimbursements.getTotalPages(), pageable);
     }
@@ -44,7 +56,7 @@ public class ReimbursementService {
 
         Page<Reimbursement> reimbursements = reimbursementRepository.findByEmployee(employee, pageable);
 
-        List<ReimbursementDTO> data = reimbursements.getContent().stream().map(reimbursementMapper::reimbursementToReimbursementDto).collect(Collectors.toList());
+        List<ReimbursementDTO> data = getReimbursement(reimbursements);
 
         return PaginationUtil.constructMapReturn(data, reimbursements.getTotalElements(), reimbursements.getTotalPages(), pageable);
     }
@@ -54,7 +66,15 @@ public class ReimbursementService {
         Reimbursement reimbursement = reimbursementMapper.submitReimbursementDtoToReimbursement(dto);
         reimbursement.setEmployee(employee);
         reimbursement.setStatus(StatusReimbursement.SUBMITTED);
-        reimbursementRepository.save(reimbursement);
+        Reimbursement savedReimbursement = reimbursementRepository.save(reimbursement);
+
+        dto.getAttachment().forEach(x -> {
+            ReimbursementAttachment attachment = new ReimbursementAttachment();
+            attachment.setName(x.getName());
+            attachment.setUrl(x.getResponse().getUrl());
+            attachment.setReimbursement(savedReimbursement);
+            reimbursementAttachmentRepository.save(attachment);
+        });
 
         return true;
     }
@@ -69,7 +89,7 @@ public class ReimbursementService {
         int limit = 10;
         Pageable pageable = PaginationUtil.constructPageable(page, limit, null, null);
         Page<Reimbursement> reimbursements = reimbursementRepository.findAll(pageable);
-        List<ReimbursementDTO> data = reimbursements.getContent().stream().map(reimbursementMapper::reimbursementToReimbursementDto).collect(Collectors.toList());
+        List<ReimbursementDTO> data = getReimbursement(reimbursements);
         return PaginationUtil.constructMapReturn(data, reimbursements.getTotalElements(), reimbursements.getTotalPages(), pageable);
     }
 
@@ -83,7 +103,7 @@ public class ReimbursementService {
         int limit = 10;
         Pageable pageable = PaginationUtil.constructPageable(page, limit, null, null);
         Page<Reimbursement> reimbursements = reimbursementRepository.findAll(pageable);
-        List<ReimbursementDTO> data = reimbursements.getContent().stream().map(reimbursementMapper::reimbursementToReimbursementDto).collect(Collectors.toList());
+        List<ReimbursementDTO> data = getReimbursement(reimbursements);
         return PaginationUtil.constructMapReturn(data, reimbursements.getTotalElements(), reimbursements.getTotalPages(), pageable);
     }
 
@@ -97,7 +117,7 @@ public class ReimbursementService {
         int limit = 10;
         Pageable pageable = PaginationUtil.constructPageable(page, limit, null, null);
         Page<Reimbursement> reimbursements = reimbursementRepository.findAll(pageable);
-        List<ReimbursementDTO> data = reimbursements.getContent().stream().map(reimbursementMapper::reimbursementToReimbursementDto).collect(Collectors.toList());
+        List<ReimbursementDTO> data = getReimbursement(reimbursements);
         return PaginationUtil.constructMapReturn(data, reimbursements.getTotalElements(), reimbursements.getTotalPages(), pageable);
     }
 
