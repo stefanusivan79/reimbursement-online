@@ -23,6 +23,16 @@ const ReimbursementService = {
 
     completeReimbursement(config) {
         return instance.put('/reimbursement/complete', null, config);
+    },
+
+    uploadReimbursementAttachment(body) {
+        return instance.post('/upload', body);
+    },
+
+    downloadReimbursementAttachment(body) {
+        return instance.post('/download', body, {
+            responseType: 'blob'
+        });
     }
 }
 
