@@ -84,6 +84,10 @@ export class ReimbursementForm extends Component {
               {
                 required: true,
                 message: 'Please input amount!'
+              },
+              {
+                type: 'number',
+                message: 'Please input number!'
               }
             ]}
           >
