@@ -41,7 +41,7 @@ const columns = [
       const content = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'self-start' }}>{listAttachment}</div>
 
       return <Popover placement="bottomRight" content={content} title="Attachments"
-                      trigger="click">Attachments</Popover>;
+                      trigger="click"><u><i>Attachments</i></u></Popover>;
     }
   }
 ];
