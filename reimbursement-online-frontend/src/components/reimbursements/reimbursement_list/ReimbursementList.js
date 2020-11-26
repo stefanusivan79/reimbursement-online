@@ -38,7 +38,7 @@ const columns = [
     render: (attachments) => {
       const listAttachment = attachments.map(item => <Button type={'link'}
                                                              onClick={() => downloadFile(item)}>{item.name_original}</Button>);
-      const content = <div style={{ display: 'flex', flexDirection: 'column' }}>{listAttachment}</div>
+      const content = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'self-start' }}>{listAttachment}</div>
 
       return <Popover placement="bottomRight" content={content} title="Attachments"
                       trigger="click">Attachments</Popover>;
