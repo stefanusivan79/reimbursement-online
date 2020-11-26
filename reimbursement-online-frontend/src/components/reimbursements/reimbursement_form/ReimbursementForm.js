@@ -108,7 +108,7 @@ export class ReimbursementForm extends Component {
           </Form.Item>
 
           <Form.Item
-            label="Attachment"
+            label="Receipt"
             name="attachment"
             valuePropName="fileList"
             getValueFromEvent={normFile}
