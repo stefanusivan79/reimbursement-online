@@ -1,4 +1,4 @@
-import { Button, Space, Table } from 'antd';
+import { Button, Popover, Space, Table } from 'antd';
 import moment from 'moment';
 import React, { Component } from 'react';
 import NumberFormat from 'react-number-format';
@@ -67,6 +67,17 @@ class ReimbursementListAdmin extends Component {
                 )
             },
         },
+        {
+            dataIndex: 'attachments',
+            render: (attachments) => {
+                const listAttachment = attachments.map(item => <Button type={'link'}
+                                                                       onClick={() => this.downloadFile(item)}>{item.name_original}</Button>);
+                const content = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'self-start' }}>{listAttachment}</div>
+
+                return <Popover placement="bottomRight" content={content} title="Attachments"
+                                trigger="click"><u><i>Attachments</i></u></Popover>;
+            }
+        },
     ];
 
     reject = (secureId) => {
@@ -97,6 +108,24 @@ class ReimbursementListAdmin extends Component {
                     loading: false
                 })
             })
+    }
+
+    downloadFile = (file) => {
+        const body = {
+            name_original: file.name_original,
+            file_name: file.file_name,
+            bucket: file.bucket
+        }
+
+        ReimbursementService.downloadReimbursementAttachment(body)
+          .then(response => {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', body.name_original); //or any other extension
+              document.body.appendChild(link);
+              link.click();
+          });
     }
 
     accept = (secureId) => {
