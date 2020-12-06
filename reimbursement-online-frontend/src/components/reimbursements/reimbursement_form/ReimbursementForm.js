@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Card, DatePicker, Form, Input, Modal, notification, Upload } from 'antd';
+import { Button, Card, DatePicker, Form, Input, InputNumber, Modal, notification, Upload } from 'antd';
 import React, { Component } from 'react';
 import ReimbursementService from '../../../services/ReimbursementService';
 
@@ -91,7 +91,12 @@ export class ReimbursementForm extends Component {
               }
             ]}
           >
-            <Input addonBefore={"Rp"} />
+            <InputNumber
+              style={{width: 'max-content'}}
+              formatter={value => `Rp ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value.replace(/\Rp\s?|(,*)/g, '')}
+              size={'large'}
+            />
           </Form.Item>
 
           <Form.Item
