@@ -8,8 +8,10 @@ import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.vault.core.VaultKeyValueOperationsSupport;
+import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.support.VaultResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,20 +22,32 @@ import java.util.UUID;
 @Slf4j
 public class UploadUtil {
 
-    @Value("${minio.host}")
     private String minioHost;
-
-    @Value("${minio.port}")
     private String minioPort;
-
-    @Value("${minio.secure}")
     private String minioSecure;
-
-    @Value("${minio.access.key}")
     private String minioAccessKey;
-
-    @Value("${minio.secret.key}")
     private String minioSecretKey;
+
+    private VaultTemplate vaultTemplate;
+
+    public UploadUtil(VaultTemplate vaultTemplate) {
+        this.vaultTemplate = vaultTemplate;
+
+        VaultResponse vault = this.vaultTemplate.opsForKeyValue("secret", VaultKeyValueOperationsSupport.KeyValueBackend.KV_2)
+                .get("eReimbursement");
+        if (null != vault && null != vault.getData()) {
+            if (null != vault.getData().get("minio.host"))
+                this.minioHost = String.valueOf(vault.getData().get("minio.host"));
+            if (null != vault.getData().get("minio.port"))
+                this.minioPort = String.valueOf(vault.getData().get("minio.port"));
+            if (null != vault.getData().get("minio.secure"))
+                this.minioSecure = String.valueOf(vault.getData().get("minio.secure"));
+            if (null != vault.getData().get("minio.access.key"))
+                this.minioAccessKey = String.valueOf(vault.getData().get("minio.access.key"));
+            if (null != vault.getData().get("minio.secret.key"))
+                this.minioSecretKey = String.valueOf(vault.getData().get("minio.secret.key"));
+        }
+    }
 
     public ResponseUpload uploadFile(MultipartFile file, String type) {
 

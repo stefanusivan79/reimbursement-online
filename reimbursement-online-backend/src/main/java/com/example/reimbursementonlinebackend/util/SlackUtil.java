@@ -16,17 +16,21 @@ import org.springframework.web.client.RestTemplate;
 public class SlackUtil {
 
     private VaultTemplate vaultTemplate;
+    private String slackWebhookUrl;
 
     public SlackUtil(VaultTemplate vaultTemplate) {
         this.vaultTemplate = vaultTemplate;
+
+        VaultResponse vault = this.vaultTemplate.opsForKeyValue("secret", VaultKeyValueOperationsSupport.KeyValueBackend.KV_2)
+                .get("eReimbursement");
+        if (null != vault && null != vault.getData() && null != vault.getData().get("slack.webhook.url")) {
+            this.slackWebhookUrl = String.valueOf(vault.getData().get("slack.webhook.url"));
+        }
     }
 
     public void sendMessage(String txt) {
         try {
-            VaultResponse vault = vaultTemplate.opsForKeyValue("secret", VaultKeyValueOperationsSupport.KeyValueBackend.KV_2)
-                    .get("eReimbursement");
-            if (null != vault && null != vault.getData() && null != vault.getData().get("slack.webhook.url")) {
-                String slackWebhookUrl = String.valueOf(vault.getData().get("slack.webhook.url"));
+            if (null != this.slackWebhookUrl) {
                 log.info("START SEND MESSAGE");
                 RestTemplate restTemplate = new RestTemplate();
 
