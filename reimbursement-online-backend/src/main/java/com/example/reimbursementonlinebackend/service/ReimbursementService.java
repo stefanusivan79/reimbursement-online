@@ -11,6 +11,7 @@ import com.example.reimbursementonlinebackend.service.dto.ReimbursementDTO;
 import com.example.reimbursementonlinebackend.service.dto.SubmitReimbursementDTO;
 import com.example.reimbursementonlinebackend.service.mapper.ReimbursementMapper;
 import com.example.reimbursementonlinebackend.util.PaginationUtil;
+import com.example.reimbursementonlinebackend.util.SlackUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,14 @@ public class ReimbursementService {
     private ReimbursementRepository reimbursementRepository;
     private ReimbursementMapper reimbursementMapper;
     private ReimbursementAttachmentRepository reimbursementAttachmentRepository;
+    private SlackUtil slackUtil;
 
     public ReimbursementService(ReimbursementRepository reimbursementRepository, ReimbursementMapper reimbursementMapper,
-                                ReimbursementAttachmentRepository reimbursementAttachmentRepository) {
+                                ReimbursementAttachmentRepository reimbursementAttachmentRepository, SlackUtil slackUtil) {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
         this.reimbursementAttachmentRepository = reimbursementAttachmentRepository;
+        this.slackUtil = slackUtil;
     }
 
     private List<ReimbursementDTO> getReimbursement(Page<Reimbursement> reimbursements) {
@@ -75,6 +78,8 @@ public class ReimbursementService {
             attachment.setReimbursement(savedReimbursement);
             reimbursementAttachmentRepository.save(attachment);
         });
+
+        slackUtil.sendMessage(String.format("Notification: %s just submit reimbursement", employee.getFullName()));
 
         return true;
     }
