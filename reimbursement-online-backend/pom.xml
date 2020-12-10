@@ -23,6 +23,7 @@
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <commons.io.version>2.6</commons.io.version>
         <minio.version>7.1.4</minio.version>
+        <jasper.version>6.16.0</jasper.version>
     </properties>
 
     <dependencies>
@@ -98,6 +99,13 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>${minio.version}</version>
+        </dependency>
+
+        <!-- Jasper -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasper.version}</version>
         </dependency>
 
         <dependency>
