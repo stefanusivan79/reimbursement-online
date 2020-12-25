@@ -21,7 +21,7 @@ public class PDFUtil {
     @Value("${template.jasper.path}")
     private String templateJasperPath;
 
-    public String generatePdfFileJasper(HashMap<String, Object> params, List<Object> detail, String fileName,
+    public String generatePdfFileJasper(HashMap<String, Object> params, List<?> detail, String fileName,
                                         String templateName) {
 
         String dest = filePath + fileName;
@@ -37,10 +37,10 @@ public class PDFUtil {
                 ds = new JREmptyDataSource();
             } else {
                 ds = new JRBeanCollectionDataSource(detail);
-                params.put("CollectionBeanParam", ds);
+                params.put("ObjectDataSource", ds);
             }
 
-            JasperPrint jp = JasperFillManager.fillReport(template, params, ds);
+            JasperPrint jp = JasperFillManager.fillReport(template, params, new JREmptyDataSource());
             JasperExportManager.exportReportToPdfFile(jp, dest);
         } catch (Exception e) {
             log.error(e.getMessage());
