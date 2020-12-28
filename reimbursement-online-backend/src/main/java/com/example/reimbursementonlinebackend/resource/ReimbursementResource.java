@@ -2,6 +2,7 @@ package com.example.reimbursementonlinebackend.resource;
 
 import com.example.reimbursementonlinebackend.domain.Employee;
 import com.example.reimbursementonlinebackend.service.ReimbursementService;
+import com.example.reimbursementonlinebackend.service.dto.ListReportDTO;
 import com.example.reimbursementonlinebackend.service.dto.RequestReportPerMonthDTO;
 import com.example.reimbursementonlinebackend.service.dto.SubmitReimbursementDTO;
 import com.example.reimbursementonlinebackend.util.AuthenticationUtil;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -76,6 +78,12 @@ public class ReimbursementResource {
     @PostMapping("/report")
     public void getReportPerMonth(HttpServletResponse response, @RequestBody RequestReportPerMonthDTO request) {
         reimbursementService.getReportPerMonth(response, request);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/list-report")
+    public ResponseEntity<List<ListReportDTO>> getListReport() {
+        return ResponseEntity.ok(reimbursementService.getListReport());
     }
 
 }

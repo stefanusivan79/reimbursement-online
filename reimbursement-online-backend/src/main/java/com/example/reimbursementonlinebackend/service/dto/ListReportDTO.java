@@ -6,11 +6,13 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class RequestReportPerMonthDTO {
-
-    private Integer year;
+public class ListReportDTO {
 
     private String month;
 
     private Integer monthNumber;
+
+    private Integer year;
+
+    private String periode;
 }

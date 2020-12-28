@@ -70,7 +70,7 @@ class ReimbursementListAdmin extends Component {
         {
             dataIndex: 'attachments',
             render: (attachments) => {
-                const listAttachment = attachments.map(item => <Button type={'link'}
+                const listAttachment = attachments.map(item => <Button type={'link'} key={item.file_name}
                                                                        onClick={() => this.downloadFile(item)}>{item.name_original}</Button>);
                 const content = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'self-start' }}>{listAttachment}</div>
 

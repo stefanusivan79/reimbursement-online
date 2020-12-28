@@ -26,6 +26,16 @@ const routes = {
                     url: '/reimbursement-list-admin'
                 }
             ]
+        },
+        {
+            title: 'Report',
+            data: [
+                {
+                    label: 'Report',
+                    key: 'report',
+                    url: '/report'
+                }
+            ]
         }
     ]
 }
