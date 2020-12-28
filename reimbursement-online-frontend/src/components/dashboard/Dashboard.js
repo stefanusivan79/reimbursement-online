@@ -9,6 +9,7 @@ import ReimbursementList from '../reimbursements/reimbursement_list/Reimbursemen
 import EditProfile from '../user/edit-profile/EditProfile';
 import ReimbursementListAdmin from './../reimbursements/reimbursement_list_admin/ReimbursementListAdmin';
 import './Dashboard.css';
+import ReportPerMonth from '../report/ReportPerMonth';
 
 const { Content, Sider } = Layout;
 
@@ -123,6 +124,8 @@ class Dashboard extends Component {
                                         <Route exact path={'/reimbursement-form'} render={() => <ReimbursementForm
                                             handleSelectedMenu={this.handleSelectedMenu} />} />
                                         <Route exact path={'/reimbursement-list-admin'} render={() => <ReimbursementListAdmin
+                                            handleSelectedMenu={this.handleSelectedMenu} />} />
+                                        <Route exact path={'/report'} render={() => <ReportPerMonth
                                             handleSelectedMenu={this.handleSelectedMenu} />} />
                                     </Switch>
                                 </Content>

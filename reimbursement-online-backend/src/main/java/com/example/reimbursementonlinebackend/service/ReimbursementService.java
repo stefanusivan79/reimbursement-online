@@ -8,10 +8,7 @@ import com.example.reimbursementonlinebackend.exception.ReimbursementNotFoundExc
 import com.example.reimbursementonlinebackend.repository.ReimbursementAttachmentRepository;
 import com.example.reimbursementonlinebackend.repository.ReimbursementRepository;
 import com.example.reimbursementonlinebackend.repository.ReportPerMonthRepository;
-import com.example.reimbursementonlinebackend.service.dto.ReimbursementDTO;
-import com.example.reimbursementonlinebackend.service.dto.ReportPerMonthDTO;
-import com.example.reimbursementonlinebackend.service.dto.RequestReportPerMonthDTO;
-import com.example.reimbursementonlinebackend.service.dto.SubmitReimbursementDTO;
+import com.example.reimbursementonlinebackend.service.dto.*;
 import com.example.reimbursementonlinebackend.service.mapper.ReimbursementMapper;
 import com.example.reimbursementonlinebackend.util.PDFUtil;
 import com.example.reimbursementonlinebackend.util.PaginationUtil;
@@ -28,6 +25,8 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,5 +172,20 @@ public class ReimbursementService {
         }
     }
 
+    public List<ListReportDTO> getListReport() {
+
+        return reimbursementRepository.findAll()
+                .stream()
+                .filter(data -> data.getStatus().equals(StatusReimbursement.COMPLETED))
+                .map(data -> {
+                    ListReportDTO dto = new ListReportDTO();
+                    LocalDate localDate = data.getDatePurchase().atZone(ZoneId.systemDefault()).toLocalDate();
+                    dto.setMonth(localDate.getMonth().name());
+                    dto.setMonthNumber(localDate.getMonthValue());
+                    dto.setYear(localDate.getYear());
+                    dto.setPeriode(String.format("%s %s", dto.getMonth(), dto.getYear()));
+                    return dto;
+                }).distinct().collect(Collectors.toList());
+    }
 
 }
