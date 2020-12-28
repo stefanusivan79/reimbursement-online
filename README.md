@@ -16,6 +16,7 @@ You need to install
 
 ```
 MySQL
+MinIO
 Java 1.8
 NodeJS with npm
 ```
@@ -39,6 +40,14 @@ MYSQL_PORT : [port]
 MYSQL_DB : [database name]
 MYSQL_USERNAME : [username]
 MYSQL_PASSWORD : [password]
+
+MINIO_HOST : [host]
+MINIO_PORT : [port]
+MINIO_SECURE : [secure]
+MINIO_ACCESS_KEY : [access key]
+MINIO_SECRET_KEY : [secret key]
+
+SLACK_WEBHOOK_URL : [webhook url]
 ```
 
 then run
