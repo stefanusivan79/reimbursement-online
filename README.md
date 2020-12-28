@@ -61,3 +61,4 @@ mvn spring-boot:run
 
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [React](https://reactjs.org/)
+* [Jasper Reports](https://community.jaspersoft.com/project/jasperreports-library)
