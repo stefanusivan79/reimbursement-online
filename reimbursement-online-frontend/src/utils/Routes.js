@@ -18,6 +18,16 @@ const routes = {
     ],
     admin: [
         {
+            title: 'Homepage',
+            data: [
+                {
+                    label: 'Dashboard',
+                    key: 'statistic',
+                    url: '/statistic'
+                }
+            ]
+        },
+        {
             title: 'Reimbursement',
             data: [
                 {
