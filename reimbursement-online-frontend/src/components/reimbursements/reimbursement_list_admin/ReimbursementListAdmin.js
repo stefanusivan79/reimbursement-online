@@ -31,6 +31,10 @@ class ReimbursementListAdmin extends Component {
             render: epoch => moment.unix(epoch).format('DD MMM YYYY'),
         },
         {
+            title: 'Employee',
+            dataIndex: 'employee_name',
+        },
+        {
             title: 'Status',
             dataIndex: 'status',
             render: status => {

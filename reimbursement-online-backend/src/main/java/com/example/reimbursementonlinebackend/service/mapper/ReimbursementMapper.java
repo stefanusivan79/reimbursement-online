@@ -19,6 +19,7 @@ public interface ReimbursementMapper {
     @Mapping(source = "reimbursement.datePurchase", target = "datePurchase", qualifiedByName = {"InstantUtil", "ConvertInstantToEpochSecond"})
     @Mapping(source = "reimbursement.creationDate", target = "creationDate", qualifiedByName = {"InstantUtil", "ConvertInstantToEpochSecond"})
     @Mapping(target = "attachments", qualifiedByName = "convertAttachment")
+    @Mapping(source = "reimbursement.employee.fullName", target = "employeeName")
     ReimbursementDTO reimbursementToReimbursementDto(Reimbursement reimbursement, List<ReimbursementAttachment> attachments);
 
     Reimbursement submitReimbursementDtoToReimbursement(SubmitReimbursementDTO dto);
