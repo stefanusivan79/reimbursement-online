@@ -25,4 +25,6 @@ public class ReimbursementDTO {
     private Long creationDate;
 
     private List<RequestDownloadDTO> attachments;
+
+    private String employeeName;
 }
