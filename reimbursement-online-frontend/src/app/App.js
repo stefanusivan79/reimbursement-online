@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { LoadingIndicator } from '../components/common/LoadingIndicator';
 import NotFound from '../components/common/NotFound';
-import Dashboard from '../components/dashboard/Dashboard';
+import Home from '../components/home/Home';
 import Login from '../components/user/login/Login';
 import "./App.css";
 
@@ -37,7 +37,7 @@ class App extends Component {
       return (
         <Switch>
           <Route exact path="/login" render={(props) => <Login {...props} isAuthenticated={this.state.isAuthenticated} />}></Route>
-          <Route path="/" render={(props) => <Dashboard {...props} />}></Route>
+          <Route path="/" render={(props) => <Home {...props} />}></Route>
           <Route component={NotFound}></Route>
         </Switch>
       );

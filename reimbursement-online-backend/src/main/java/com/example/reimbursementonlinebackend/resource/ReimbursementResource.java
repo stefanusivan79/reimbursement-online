@@ -2,6 +2,8 @@ package com.example.reimbursementonlinebackend.resource;
 
 import com.example.reimbursementonlinebackend.domain.Employee;
 import com.example.reimbursementonlinebackend.service.ReimbursementService;
+import com.example.reimbursementonlinebackend.service.dto.ListReportDTO;
+import com.example.reimbursementonlinebackend.service.dto.RequestReportPerMonthDTO;
 import com.example.reimbursementonlinebackend.service.dto.SubmitReimbursementDTO;
 import com.example.reimbursementonlinebackend.util.AuthenticationUtil;
 import org.springframework.http.HttpStatus;
@@ -9,15 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("api/reimbursement")
 public class ReimbursementResource {
 
-    private ReimbursementService reimbursementService;
+    private final ReimbursementService reimbursementService;
 
-    private AuthenticationUtil authenticationUtil;
+    private final AuthenticationUtil authenticationUtil;
 
     public ReimbursementResource(ReimbursementService reimbursementService, AuthenticationUtil authenticationUtil) {
         this.reimbursementService = reimbursementService;
@@ -68,6 +72,18 @@ public class ReimbursementResource {
     @PutMapping("/complete")
     public ResponseEntity<Map<String, Object>> completeReimbursement(@RequestParam String reimbursementId) {
         return ResponseEntity.ok(reimbursementService.completeReimbursement(reimbursementId));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/report")
+    public void getReportPerMonth(HttpServletResponse response, @RequestBody RequestReportPerMonthDTO request) {
+        reimbursementService.getReportPerMonth(response, request);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/list-report")
+    public ResponseEntity<List<ListReportDTO>> getListReport() {
+        return ResponseEntity.ok(reimbursementService.getListReport());
     }
 
 }

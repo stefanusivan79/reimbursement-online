@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -22,4 +23,8 @@ public class ReimbursementDTO {
     private BigDecimal amount;
 
     private Long creationDate;
+
+    private List<RequestDownloadDTO> attachments;
+
+    private String employeeName;
 }

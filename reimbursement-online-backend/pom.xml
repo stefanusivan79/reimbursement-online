@@ -21,6 +21,9 @@
         <commons.lang3.version>3.10</commons.lang3.version>
         <swagger.version>2.9.2</swagger.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+        <commons.io.version>2.6</commons.io.version>
+        <minio.version>7.1.4</minio.version>
+        <jasper.version>6.16.0</jasper.version>
     </properties>
 
     <dependencies>
@@ -73,6 +76,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang3.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
 
         <!-- Swagger -->
         <dependency>
@@ -84,6 +92,20 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+
+        <!-- Minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
+
+        <!-- Jasper -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasper.version}</version>
         </dependency>
 
         <dependency>
